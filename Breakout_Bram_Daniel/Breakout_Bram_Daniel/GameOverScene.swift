@@ -19,6 +19,13 @@ class GameOverScene: SKScene {
         }
     }
     
+    var points : Int = 0 {
+        didSet {
+            let pointLabel = childNodeWithName("pointLabel") as! SKLabelNode
+            pointLabel.text = "\(points)"
+        }
+    }
+    
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         if let view = view {
             // 2.

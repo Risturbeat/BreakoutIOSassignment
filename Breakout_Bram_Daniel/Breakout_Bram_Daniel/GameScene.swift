@@ -230,13 +230,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func gameOver(timer: NSTimer) {
-        resetPoints()
         showGameOverScene(true)
+        resetPoints()
+        
     }
     func showGameOverScene(userWon: Bool){
         if let mainView = self.view {
             let gameOverScene = GameOverScene.unarchiveFromFile("GameOverScene") as! GameOverScene
             gameOverScene.gameWon = userWon
+            gameOverScene.points = points
             mainView.presentScene(gameOverScene)
         }
     }
