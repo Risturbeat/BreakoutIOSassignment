@@ -22,10 +22,11 @@ let PaddleCategory : UInt32 = 0x1 << 3 // 00000000000000000000000000001000
 class GameScene: SKScene, SKPhysicsContactDelegate {
     private let defaults = NSUserDefaults.standardUserDefaults()
     var isFingerOnPaddle = false
-    var brickAmount = 25
-    var paddleScale = 1.0
-    var livesLeft = 3//Default Life Amount
-    var ballSpeed: Int = 10
+//    var brickAmount = 25
+//    var paddleScale = 1.0
+//    var livesLeft = 3//Default Life Amount
+//    var ballSpeed: Int = 10
+    var bricksLeftInGame: Int = 0
     var ball: SKSpriteNode = SKSpriteNode()
     var lifeLabel : SKLabelNode = SKLabelNode()
     struct Settings {
@@ -60,7 +61,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(bottom)
         
         let paddle = childNodeWithName(PaddleCategoryName) as! SKSpriteNode
-        paddle.xScale = CGFloat(paddleScale)
+        paddle.xScale = CGFloat(settings.paddleScale)
 //        etScale(CGFloat(paddleScale), CGFloat(1.0))
         createBall()
         
@@ -124,6 +125,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //TODO: check if nil
         settings.brickAmount = defaults.objectForKey("brickAmount") as! Int
         settings.liveAmount = defaults.objectForKey("lifeAmount") as! Int
+        bricksLeftInGame = settings.brickAmount
         settings.paddleScale = defaults.objectForKey("paddleScale") as! Double
         if let speed = defaults.objectForKey("speed") as? Bool {
             println(speed)
@@ -183,25 +185,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 secondBody.node!.runAction(SKAction.rotateByAngle(6.2831853072, duration: 1))
                 secondBody.node!.runAction(SKAction.fadeOutWithDuration(2), completion : {
                     secondBody.node!.removeFromParent()
-                    if self.isGameWon() {
-                        if let mainView = self.view {
-                            let gameOverScene = GameOverScene.unarchiveFromFile("GameOverScene") as! GameOverScene
-                            gameOverScene.gameWon = true
-                            mainView.presentScene(gameOverScene)
-                        }
-                    }
                 } )
+                bricksLeftInGame--
+                if self.isGameWon() {
+                    firstBody.categoryBitMask = 0x1 >> 3
+                    let nextTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "showGameOverScene:", userInfo: nil, repeats: false)
+                }
             }
         }
     }
     
-    func isGameWon() -> Bool {
-        var numberOfBricks = 0
-        self.enumerateChildNodesWithName(BrickCategoryName) {
-            node, stop in
-            numberOfBricks = numberOfBricks + 1
+    func showGameOverScene(timer: NSTimer) {
+        if let mainView = self.view {
+            let gameOverScene = GameOverScene.unarchiveFromFile("GameOverScene") as! GameOverScene
+            gameOverScene.gameWon = true
+            mainView.presentScene(gameOverScene)
         }
-        return numberOfBricks == 0
+
+    }
+    func isGameWon() -> Bool {
+        return bricksLeftInGame == 0
     }
     
     // MARK: - Paddle Movement
