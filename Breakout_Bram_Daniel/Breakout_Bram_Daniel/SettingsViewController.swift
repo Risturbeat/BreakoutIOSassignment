@@ -56,7 +56,6 @@ class SettingsViewController: UIViewController {
             break;
         }
         defaults.setObject(paddleScale, forKey: "paddleScale")
-        paddleSizeLabel.text = "\(paddleScale)"
     }
     
     override func viewDidLoad() {

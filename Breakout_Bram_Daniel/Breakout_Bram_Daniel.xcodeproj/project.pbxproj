@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F584BF61B32AF7000FDDC70 /* Brick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F584BF51B32AF7000FDDC70 /* Brick.swift */; };
 		3F5C047F1B315BA000B67D99 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C047E1B315BA000B67D99 /* AppDelegate.swift */; };
 		3F5C04811B315BA000B67D99 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3F5C04801B315BA000B67D99 /* GameScene.sks */; };
 		3F5C04831B315BA000B67D99 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C04821B315BA000B67D99 /* GameScene.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F584BF51B32AF7000FDDC70 /* Brick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Brick.swift; path = ../Brick.swift; sourceTree = "<group>"; };
 		3F5C04791B315BA000B67D99 /* Breakout_Bram_Daniel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Breakout_Bram_Daniel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F5C047D1B315BA000B67D99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F5C047E1B315BA000B67D99 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				3F5C04A81B31843900B67D99 /* SettingsViewController.swift */,
 				3F5C04AA1B31844E00B67D99 /* Settings.swift */,
 				3F5C04AC1B31A4B000B67D99 /* Ball.swift */,
+				3F584BF51B32AF7000FDDC70 /* Brick.swift */,
 				3F5C04AE1B31A73C00B67D99 /* Paddle.swift */,
 			);
 			path = Breakout_Bram_Daniel;
@@ -246,6 +249,7 @@
 				3F5C04831B315BA000B67D99 /* GameScene.swift in Sources */,
 				3F5C04AF1B31A73C00B67D99 /* Paddle.swift in Sources */,
 				3F5C04A31B3166BE00B67D99 /* Block.swift in Sources */,
+				3F584BF61B32AF7000FDDC70 /* Brick.swift in Sources */,
 				3F5C04851B315BA000B67D99 /* GameViewController.swift in Sources */,
 				3F5C04AB1B31844E00B67D99 /* Settings.swift in Sources */,
 				3F5C047F1B315BA000B67D99 /* AppDelegate.swift in Sources */,
@@ -449,6 +453,7 @@
 				3F5C049E1B315BA000B67D99 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3F5C049F1B315BA000B67D99 /* Build configuration list for PBXNativeTarget "Breakout_Bram_DanielTests" */ = {
 			isa = XCConfigurationList;
@@ -457,6 +462,7 @@
 				3F5C04A11B315BA000B67D99 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

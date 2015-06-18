@@ -105,15 +105,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             xOffset = xOffset + brickWidth + padding
             //TODO: create new brick class
-            let brick = SKSpriteNode(imageNamed: "brickOne")
-            brick.position = CGPointMake(xOffset, yOffset)
-            brick.physicsBody = SKPhysicsBody(rectangleOfSize: brick.frame.size)
-            brick.physicsBody!.allowsRotation = false
-            brick.physicsBody!.friction = 0.0
-            brick.physicsBody!.affectedByGravity = false
-            brick.physicsBody!.dynamic = false
-            brick.name = BrickCategoryName
-            brick.physicsBody!.categoryBitMask = BrickCategory
+//            let brick = SKSpriteNode(imageNamed: "brickOne")
+//            brick.position = CGPointMake(xOffset, yOffset)
+//            brick.physicsBody = SKPhysicsBody(rectangleOfSize: brick.frame.size)
+//            brick.physicsBody!.allowsRotation = false
+//            brick.physicsBody!.friction = 0.0
+//            brick.physicsBody!.affectedByGravity = false
+//            brick.physicsBody!.dynamic = false
+//            brick.name = BrickCategoryName
+//            brick.physicsBody!.categoryBitMask = BrickCategory
+            let brick = Brick(xOffset: xOffset, yOffset: yOffset)
             addChild(brick)
         }
     }
@@ -175,18 +176,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //4. Ball/Block contact
         if firstBody.categoryBitMask == BallCategory && secondBody.categoryBitMask == BrickCategory {
-            secondBody.categoryBitMask = 0x1 >> 3 //Change BitMask so the block is not collidable
-            secondBody.node!.runAction(SKAction.rotateByAngle(6.2831853072, duration: 1))
-            secondBody.node!.runAction(SKAction.fadeOutWithDuration(2), completion : {
-                secondBody.node!.removeFromParent()
-                if self.isGameWon() {
-                    if let mainView = self.view {
-                        let gameOverScene = GameOverScene.unarchiveFromFile("GameOverScene") as! GameOverScene
-                        gameOverScene.gameWon = true
-                        mainView.presentScene(gameOverScene)
+            var brickBody = secondBody.node as? Brick
+            brickBody!.gotHit()
+            if brickBody?.numberOfHitsNeeded == 0 {
+                secondBody.categoryBitMask = 0x1 >> 3 //Change BitMask so the block is not collidable
+                secondBody.node!.runAction(SKAction.rotateByAngle(6.2831853072, duration: 1))
+                secondBody.node!.runAction(SKAction.fadeOutWithDuration(2), completion : {
+                    secondBody.node!.removeFromParent()
+                    if self.isGameWon() {
+                        if let mainView = self.view {
+                            let gameOverScene = GameOverScene.unarchiveFromFile("GameOverScene") as! GameOverScene
+                            gameOverScene.gameWon = true
+                            mainView.presentScene(gameOverScene)
+                        }
                     }
-                }
-            } )
+                } )
+            }
         }
     }
     
