@@ -70,7 +70,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(bottom)
         
         paddle = childNodeWithName(PaddleCategoryName) as! SKSpriteNode
-        
         paddle.xScale = CGFloat(settings.paddleScale)
 
         createBall()

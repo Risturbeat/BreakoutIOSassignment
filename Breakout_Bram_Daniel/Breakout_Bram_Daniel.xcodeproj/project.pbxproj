@@ -21,7 +21,6 @@
 		3F5C04A71B316B3200B67D99 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C04A61B316B3200B67D99 /* GameOverScene.swift */; };
 		3F5C04A91B31843900B67D99 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C04A81B31843900B67D99 /* SettingsViewController.swift */; };
 		3F5C04AD1B31A4B000B67D99 /* Ball.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C04AC1B31A4B000B67D99 /* Ball.swift */; };
-		3F5C04AF1B31A73C00B67D99 /* Paddle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C04AE1B31A73C00B67D99 /* Paddle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,7 +52,6 @@
 		3F5C04A61B316B3200B67D99 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		3F5C04A81B31843900B67D99 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		3F5C04AC1B31A4B000B67D99 /* Ball.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ball.swift; sourceTree = "<group>"; };
-		3F5C04AE1B31A73C00B67D99 /* Paddle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paddle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,7 +104,6 @@
 				3F5C04A81B31843900B67D99 /* SettingsViewController.swift */,
 				3F5C04AC1B31A4B000B67D99 /* Ball.swift */,
 				3F584BF51B32AF7000FDDC70 /* Brick.swift */,
-				3F5C04AE1B31A73C00B67D99 /* Paddle.swift */,
 				3F584BF71B32CBBE00FDDC70 /* PowerUp.swift */,
 			);
 			path = Breakout_Bram_Daniel;
@@ -244,7 +241,6 @@
 				3F5C04AD1B31A4B000B67D99 /* Ball.swift in Sources */,
 				3F5C04A71B316B3200B67D99 /* GameOverScene.swift in Sources */,
 				3F5C04831B315BA000B67D99 /* GameScene.swift in Sources */,
-				3F5C04AF1B31A73C00B67D99 /* Paddle.swift in Sources */,
 				3F584BF61B32AF7000FDDC70 /* Brick.swift in Sources */,
 				3F5C04851B315BA000B67D99 /* GameViewController.swift in Sources */,
 				3F5C047F1B315BA000B67D99 /* AppDelegate.swift in Sources */,
