@@ -22,6 +22,7 @@ class Ball: SKSpriteNode{
         
         physicsBody!.categoryBitMask = BallCategory
         physicsBody!.contactTestBitMask = BottomCategory | BrickCategory
+        physicsBody?.collisionBitMask = BrickCategory | BottomCategory | PaddleCategory
     }
     
     override init(texture:SKTexture, color: UIColor, size: CGSize){

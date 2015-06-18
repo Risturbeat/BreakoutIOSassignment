@@ -18,37 +18,41 @@ let BallCategory   : UInt32 = 0x1 << 0 // 00000000000000000000000000000001
 let BottomCategory : UInt32 = 0x1 << 1 // 00000000000000000000000000000010
 let BrickCategory  : UInt32 = 0x1 << 2 // 00000000000000000000000000000100
 let PaddleCategory : UInt32 = 0x1 << 3 // 00000000000000000000000000001000
+let PowerUpCategory : UInt32 = 0x1 << 4 //00000000000000000000000000010000
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     private let defaults = NSUserDefaults.standardUserDefaults()
-    var isFingerOnPaddle = false
-    var bricksLeftInGame: Int = 0
-    var ball = SKSpriteNode()
-    var paddle = SKSpriteNode()
-    var lifeLabel = SKLabelNode()
-    var ballFired = false
-    var pointsLabel = SKLabelNode()
-    var points: Int = 0
-    struct Settings {
+    private var isFingerOnPaddle = false
+    private var bricksLeftInGame: Int = 0
+    private var ball = SKSpriteNode()
+    private var paddle = SKSpriteNode()
+    private var lifeLabel = SKLabelNode()
+    private var ballFired = false
+    private var pointsLabel = SKLabelNode()
+    private var points: Int = 0
+    private var timer: NSTimer = NSTimer()
+    
+    private struct Settings {
         var ballSpeed = 10
         var paddleScale = 1.0
         var brickAmount = 25
         var lifeAmount = 3
         var ballAmount = 2
     }
-    var settings = Settings()
+    private var settings = Settings()
 
     
     // MARK: - Set-Up
     override func didMoveToView(view: SKView) {
         super.didMoveToView(view)
         
+        getVariablesFromUserDefaults()
+        
         lifeLabel = childNodeWithName("livesLabel") as! SKLabelNode
         lifeLabel.text = "\(settings.lifeAmount)"
         pointsLabel = childNodeWithName("pointsLabel") as! SKLabelNode
+        pointsLabel.text = "\(points)"
         
-        getVariablesFromUserDefaults()
-
         // 1. Create a physics body that borders the screen
         let borderBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         // 2. Set the friction of that physicsBody to 0
@@ -66,6 +70,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(bottom)
         
         paddle = childNodeWithName(PaddleCategoryName) as! SKSpriteNode
+        
         paddle.xScale = CGFloat(settings.paddleScale)
 
         createBall()
@@ -108,7 +113,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func getVariablesFromUserDefaults(){
-        //TODO: check if nil
         if let savedBrickAmount = defaults.objectForKey("brickAmount") as? Int {
                 settings.brickAmount = savedBrickAmount
         }
@@ -123,7 +127,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if let speed = defaults.objectForKey("speed") as? Bool {
-            println(speed)
             switch(speed) {
             case true:
                 settings.ballSpeed = 50
@@ -137,7 +140,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         if let previousPoints = defaults.objectForKey("points") as? Int{
             points = previousPoints
-            pointsLabel.text = "\(points)"
         }
     }
     
@@ -163,7 +165,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 settings.lifeAmount--
                 ballFired = false
                 lifeLabel.text = "\(settings.lifeAmount)"
-                println("ground hit")
                 if settings.lifeAmount == 0 {
                     if let mainView = view {
                         resetPoints()
@@ -184,17 +185,49 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 secondBody.node!.runAction(SKAction.fadeOutWithDuration(2), completion : {
                     secondBody.node!.removeFromParent()
                 } )
+                if (brickBody!.hasPowerUp) {
+                    var powerUp = PowerUp(imageName: brickBody!.powerUpName, xPos: brickBody!.position.x, yPos: brickBody!.position.y)
+                    addChild(powerUp)
+                    powerUp.physicsBody!.applyImpulse(CGVectorMake(0, -5))
+                }
                 bricksLeftInGame--
                 if self.isGameWon() {
                     firstBody.categoryBitMask = 0x1 >> 3
-                    let nextTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "gameOver:", userInfo: true, repeats: false)
+                    let timer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "gameOver:", userInfo: true, repeats: false)
                 }
             }
+        }
+        //5. powerUp/paddle contact
+        if firstBody.categoryBitMask == PaddleCategory && secondBody.categoryBitMask == PowerUpCategory {
+            var powerUp = secondBody.node as? PowerUp
+            secondBody.node!.removeFromParent()
+            switch (powerUp!.powerUpName){
+                case "powerUpPaddleIncrease":
+                    paddle.xScale = CGFloat(2)
+                    timer.invalidate()
+                    timer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: "resetPaddleToOriginalSize:", userInfo: true, repeats: false)
+                break
+                
+                case "powerUpExtraLife":
+                    settings.lifeAmount++
+                    lifeLabel.text = "\(settings.lifeAmount)"
+                break
+                
+                default:
+                break
+            }
+        }
+        //6. powerUp/Bottom contact
+        if firstBody.categoryBitMask == BottomCategory && secondBody.categoryBitMask == PowerUpCategory {
+            secondBody.node?.removeFromParent()
         }
     }
     func resetPoints(){
         points = 0
         pointsLabel.text = "\(points)"
+    }
+    func resetPaddleToOriginalSize(timer: NSTimer){
+        paddle.xScale = CGFloat(settings.paddleScale)
     }
     
     func gameOver(timer: NSTimer) {
@@ -227,7 +260,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             var angle = CGFloat(arc4random_uniform(360) + 1)
             var speed = CGFloat(arc4random_uniform(UInt32(settings.ballSpeed)) + 20)
             ballFired = true
-            //If no body is present, push the ball
             ball.physicsBody!.applyImpulse(CGVectorMake(cos(angle) * speed, sin(angle) * speed))
             
         }

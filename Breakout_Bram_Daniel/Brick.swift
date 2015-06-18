@@ -11,7 +11,8 @@ class Brick: SKSpriteNode{
     
     var numberOfHitsNeeded: Int = 0
     var pointsOnHit = 50
-    
+    var powerUpName: String = "nothing"
+    var hasPowerUp: Bool = false
     struct BrickNames {
         var brickOne = "brickOne"
         var brickTwo = "brickTwo"
@@ -42,7 +43,7 @@ class Brick: SKSpriteNode{
             numberOfHitsNeeded = 1
             imageName = brickName.brickThree
         }
-
+        
         let texture = SKTexture(imageNamed: imageName)
         super.init(texture: texture, color: UIColor.clearColor(), size: texture.size())
         position = CGPointMake(xOffset, yOffset)
@@ -51,15 +52,31 @@ class Brick: SKSpriteNode{
         physicsBody!.friction = 0.0
         physicsBody!.affectedByGravity = false
         physicsBody!.dynamic = false
-        name = BrickCategoryName
+        
         physicsBody!.categoryBitMask = BrickCategory
-            }
+        createPowerUp()
+    }
     override init(texture:SKTexture, color: UIColor, size: CGSize){
         super.init(texture: texture, color: color, size: size)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func createPowerUp() {
+        var powerUpChance = arc4random_uniform(100)
+        switch(powerUpChance) {
+        case 75...95:
+            powerUpName = "powerUpPaddleIncrease"
+            hasPowerUp = true
+            break
+        case 95...100:
+            powerUpName = "powerUpExtraLife"
+            hasPowerUp = true
+        default:
+            break
+        }
     }
     
     func gotHit() -> Int{
