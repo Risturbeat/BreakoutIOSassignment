@@ -9,10 +9,10 @@
 import SpriteKit
 class Ball: SKSpriteNode{
     
-    init(imageNamed: String){
+    init(imageNamed: String, xPos: CGFloat){
         let texture = SKTexture(imageNamed: imageNamed)
         super.init(texture: texture, color: UIColor.clearColor(), size: texture.size())
-        position = CGPointMake(600,70)
+        position = CGPointMake(xPos,70)
         physicsBody = SKPhysicsBody(circleOfRadius: 15)
         physicsBody!.allowsRotation = false
         physicsBody!.friction = 0

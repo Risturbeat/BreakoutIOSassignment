@@ -28,7 +28,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //    var ballSpeed: Int = 10
     var bricksLeftInGame: Int = 0
     var ball: SKSpriteNode = SKSpriteNode()
+    var paddle: SKSpriteNode = SKSpriteNode()
     var lifeLabel : SKLabelNode = SKLabelNode()
+    var ballFired = false
     struct Settings {
         var ballSpeed = 10
         var paddleScale = 1.0
@@ -60,7 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bottom.physicsBody = SKPhysicsBody(edgeLoopFromRect: bottomRect)
         addChild(bottom)
         
-        let paddle = childNodeWithName(PaddleCategoryName) as! SKSpriteNode
+        paddle = childNodeWithName(PaddleCategoryName) as! SKSpriteNode
         paddle.xScale = CGFloat(settings.paddleScale)
 //        etScale(CGFloat(paddleScale), CGFloat(1.0))
         createBall()
@@ -76,7 +78,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createBall(){
-        ball = Ball(imageNamed: "ball")
+        ball = Ball(imageNamed: "ball", xPos: paddle.position.x)
         addChild(ball)
     }
     
@@ -164,6 +166,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if firstBody.categoryBitMask == BallCategory && secondBody.categoryBitMask == BottomCategory {
             ball.removeFromParent()
                 settings.liveAmount--
+                ballFired = false
                 lifeLabel.text = "\(settings.liveAmount)"
                 println("ground hit")
                 if settings.liveAmount == 0 {
@@ -217,11 +220,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if body.node!.name == PaddleCategoryName {
                 isFingerOnPaddle = true
             }
-        }else{
+        } else {
             var angle = CGFloat(arc4random_uniform(360) + 1)
             var speed = CGFloat(arc4random_uniform(UInt32(settings.ballSpeed)) + 20)
+            ballFired = true
             //If no body is present, push the ball
             ball.physicsBody!.applyImpulse(CGVectorMake(cos(angle) * speed, sin(angle) * speed))
+            
         }
         
     }
@@ -244,6 +249,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             // 6. Update paddle position
             paddle.position = CGPointMake(paddleX, paddle.position.y)
+            
+            
+            if !ballFired {
+                ball.position.x = paddle.position.x
+            }
         }
     }
     
