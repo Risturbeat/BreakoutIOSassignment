@@ -22,21 +22,19 @@ let PaddleCategory : UInt32 = 0x1 << 3 // 00000000000000000000000000001000
 class GameScene: SKScene, SKPhysicsContactDelegate {
     private let defaults = NSUserDefaults.standardUserDefaults()
     var isFingerOnPaddle = false
-//    var brickAmount = 25
-//    var paddleScale = 1.0
-//    var livesLeft = 3//Default Life Amount
-//    var ballSpeed: Int = 10
     var bricksLeftInGame: Int = 0
-    var ball: SKSpriteNode = SKSpriteNode()
-    var paddle: SKSpriteNode = SKSpriteNode()
-    var lifeLabel : SKLabelNode = SKLabelNode()
+    var ball = SKSpriteNode()
+    var paddle = SKSpriteNode()
+    var lifeLabel = SKLabelNode()
     var ballFired = false
+    var pointsLabel = SKLabelNode()
+    var points: Int = 0
     struct Settings {
         var ballSpeed = 10
         var paddleScale = 1.0
         var brickAmount = 25
-        var liveAmount = 3
-        
+        var lifeAmount = 3
+        var ballAmount = 2
     }
     var settings = Settings()
 
@@ -44,6 +42,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Set-Up
     override func didMoveToView(view: SKView) {
         super.didMoveToView(view)
+        
+        lifeLabel = childNodeWithName("livesLabel") as! SKLabelNode
+        lifeLabel.text = "\(settings.lifeAmount)"
+        pointsLabel = childNodeWithName("pointsLabel") as! SKLabelNode
+        
         getVariablesFromUserDefaults()
 
         // 1. Create a physics body that borders the screen
@@ -64,15 +67,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         paddle = childNodeWithName(PaddleCategoryName) as! SKSpriteNode
         paddle.xScale = CGFloat(settings.paddleScale)
-//        etScale(CGFloat(paddleScale), CGFloat(1.0))
+
         createBall()
         
         bottom.physicsBody!.categoryBitMask = BottomCategory
         paddle.physicsBody!.categoryBitMask = PaddleCategory
-        
-        
-        lifeLabel = childNodeWithName("livesLabel") as! SKLabelNode
-        lifeLabel.text = "\(settings.liveAmount)"
         
         createBricks()
     }
@@ -83,8 +82,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createBricks(){
-        
-        
         // 1. Store some useful constants
         let brickWidth = SKSpriteNode(imageNamed: "brickOne").size.width
         let brickHeight = SKSpriteNode(imageNamed: "brickOne").size.height
@@ -93,13 +90,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let padding: CGFloat = 10.0
         let totalPadding = padding * CGFloat(settings.brickAmount - 1)
         
-
-
         // 2. Calculate the xOffset
         var xOffset = CGFloat(25)
         var yOffset = CGRectGetHeight(frame) * 0.9
         let maxBricksPerRow = Int(CGRectGetWidth(frame)-xOffset) / Int(brickWidth+padding)
-        println("maxbricks   \(maxBricksPerRow)")
+
         // 3. Create the blocks and add them to the scene
         for i in 0 ..< settings.brickAmount {
             if i % maxBricksPerRow == 0 && i != 0{
@@ -107,28 +102,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 xOffset = CGFloat(25)
             }
             xOffset = xOffset + brickWidth + padding
-            //TODO: create new brick class
-//            let brick = SKSpriteNode(imageNamed: "brickOne")
-//            brick.position = CGPointMake(xOffset, yOffset)
-//            brick.physicsBody = SKPhysicsBody(rectangleOfSize: brick.frame.size)
-//            brick.physicsBody!.allowsRotation = false
-//            brick.physicsBody!.friction = 0.0
-//            brick.physicsBody!.affectedByGravity = false
-//            brick.physicsBody!.dynamic = false
-//            brick.name = BrickCategoryName
-//            brick.physicsBody!.categoryBitMask = BrickCategory
             let brick = Brick(xOffset: xOffset, yOffset: yOffset)
             addChild(brick)
         }
     }
     
     func getVariablesFromUserDefaults(){
-        
         //TODO: check if nil
-        settings.brickAmount = defaults.objectForKey("brickAmount") as! Int
-        settings.liveAmount = defaults.objectForKey("lifeAmount") as! Int
+        if let savedBrickAmount = defaults.objectForKey("brickAmount") as? Int {
+                settings.brickAmount = savedBrickAmount
+        }
         bricksLeftInGame = settings.brickAmount
-        settings.paddleScale = defaults.objectForKey("paddleScale") as! Double
+        
+        if let savedLifeAmount = defaults.objectForKey("lifeAmount") as? Int {
+            settings.lifeAmount = savedLifeAmount
+        }
+        
+        if let savedPaddleScale = defaults.objectForKey("paddleScale") as? Double{
+            settings.paddleScale = savedPaddleScale
+        }
+        
         if let speed = defaults.objectForKey("speed") as? Bool {
             println(speed)
             switch(speed) {
@@ -142,8 +135,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 break
             }
         }
-        
-        //        ballAmount = defaults.objectForKey(")
+        if let previousPoints = defaults.objectForKey("points") as? Int{
+            points = previousPoints
+            pointsLabel.text = "\(points)"
+        }
     }
     
     //MARK: - Collision Detection
@@ -165,15 +160,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // 3. react to the contact between ball and bottom
         if firstBody.categoryBitMask == BallCategory && secondBody.categoryBitMask == BottomCategory {
             ball.removeFromParent()
-                settings.liveAmount--
+                settings.lifeAmount--
                 ballFired = false
-                lifeLabel.text = "\(settings.liveAmount)"
+                lifeLabel.text = "\(settings.lifeAmount)"
                 println("ground hit")
-                if settings.liveAmount == 0 {
+                if settings.lifeAmount == 0 {
                     if let mainView = view {
-                        let gameOverScene = GameOverScene.unarchiveFromFile("GameOverScene") as! GameOverScene
-                        gameOverScene.gameWon = false
-                        mainView.presentScene(gameOverScene)
+                        resetPoints()
+                        showGameOverScene(false)
                     }
                 }
             createBall()
@@ -182,7 +176,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //4. Ball/Block contact
         if firstBody.categoryBitMask == BallCategory && secondBody.categoryBitMask == BrickCategory {
             var brickBody = secondBody.node as? Brick
-            brickBody!.gotHit()
+            points += brickBody!.gotHit()
+            pointsLabel.text = "\(points)"
             if brickBody?.numberOfHitsNeeded == 0 {
                 secondBody.categoryBitMask = 0x1 >> 3 //Change BitMask so the block is not collidable
                 secondBody.node!.runAction(SKAction.rotateByAngle(6.2831853072, duration: 1))
@@ -192,20 +187,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 bricksLeftInGame--
                 if self.isGameWon() {
                     firstBody.categoryBitMask = 0x1 >> 3
-                    let nextTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "showGameOverScene:", userInfo: nil, repeats: false)
+                    let nextTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "gameOver:", userInfo: true, repeats: false)
                 }
             }
         }
     }
+    func resetPoints(){
+        points = 0
+        pointsLabel.text = "\(points)"
+    }
     
-    func showGameOverScene(timer: NSTimer) {
+    func gameOver(timer: NSTimer) {
+        resetPoints()
+        showGameOverScene(true)
+    }
+    func showGameOverScene(userWon: Bool){
         if let mainView = self.view {
             let gameOverScene = GameOverScene.unarchiveFromFile("GameOverScene") as! GameOverScene
-            gameOverScene.gameWon = true
+            gameOverScene.gameWon = userWon
             mainView.presentScene(gameOverScene)
         }
-
     }
+    
     func isGameWon() -> Bool {
         return bricksLeftInGame == 0
     }
@@ -250,7 +253,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // 6. Update paddle position
             paddle.position = CGPointMake(paddleX, paddle.position.y)
             
-            
             if !ballFired {
                 ball.position.x = paddle.position.x
             }
@@ -259,5 +261,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         isFingerOnPaddle = false
+    }
+    
+    //MARK: - View removed from screen
+    override func willMoveFromView(view: SKView) {
+        defaults.setObject(points, forKey: "points")
     }
 }

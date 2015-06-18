@@ -10,6 +10,7 @@ import SpriteKit
 class Brick: SKSpriteNode{
     
     var numberOfHitsNeeded: Int = 0
+    var pointsOnHit = 50
     
     struct BrickNames {
         var brickOne = "brickOne"
@@ -24,14 +25,17 @@ class Brick: SKSpriteNode{
         switch(randomNumber) {
         case 0...60:
             numberOfHitsNeeded = 1
+            pointsOnHit = 50
             imageName = brickName.brickOne
             break
         case 60...90:
             numberOfHitsNeeded = 2
+            pointsOnHit = 75
             imageName = brickName.brickTwo
             break
         case 90...100:
             numberOfHitsNeeded = 3
+            pointsOnHit = 100
             imageName = brickName.brickThree
             break
         default:
@@ -58,15 +62,18 @@ class Brick: SKSpriteNode{
         fatalError("init(coder:) has not been implemented")
     }
     
-    func gotHit(){
+    func gotHit() -> Int{
         numberOfHitsNeeded--
+        let oldPoints = pointsOnHit
         var imageName: String
         switch(numberOfHitsNeeded) {
         case 2:
             imageName = brickName.brickTwo
+            pointsOnHit = 75
             break
         case 1:
             imageName = brickName.brickOne
+            pointsOnHit = 50
             break
         default:
             imageName = "error"
@@ -75,5 +82,6 @@ class Brick: SKSpriteNode{
         if imageName != "error" {
             texture = SKTexture(imageNamed: imageName)
         }
+        return oldPoints
     }
 }

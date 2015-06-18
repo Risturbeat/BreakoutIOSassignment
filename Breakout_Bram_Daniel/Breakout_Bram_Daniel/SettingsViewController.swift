@@ -10,12 +10,9 @@ import UIKit
 
 class SettingsViewController: UIViewController {
     private let defaults = NSUserDefaults.standardUserDefaults()
-    var settings = Settings()
-    
     
     @IBOutlet weak var brickAmountLabel: UILabel!
     @IBOutlet weak var lifeAmountLabel: UILabel!
-    @IBOutlet weak var paddleSizeLabel: UILabel!
     @IBOutlet weak var speedLabel: UILabel!
     
     @IBOutlet weak var brickSlider: UISlider!
@@ -88,7 +85,6 @@ class SettingsViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        
         // Dispose of any resources that can be recreated.
     }
 }

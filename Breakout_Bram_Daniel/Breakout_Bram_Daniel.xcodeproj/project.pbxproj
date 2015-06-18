@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3F584BF61B32AF7000FDDC70 /* Brick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F584BF51B32AF7000FDDC70 /* Brick.swift */; };
+		3F584BF81B32CBBE00FDDC70 /* PowerUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F584BF71B32CBBE00FDDC70 /* PowerUp.swift */; };
 		3F5C047F1B315BA000B67D99 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C047E1B315BA000B67D99 /* AppDelegate.swift */; };
 		3F5C04811B315BA000B67D99 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3F5C04801B315BA000B67D99 /* GameScene.sks */; };
 		3F5C04831B315BA000B67D99 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C04821B315BA000B67D99 /* GameScene.swift */; };
@@ -16,11 +17,9 @@
 		3F5C048A1B315BA000B67D99 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F5C04891B315BA000B67D99 /* Images.xcassets */; };
 		3F5C048D1B315BA000B67D99 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F5C048B1B315BA000B67D99 /* LaunchScreen.xib */; };
 		3F5C04991B315BA000B67D99 /* Breakout_Bram_DanielTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C04981B315BA000B67D99 /* Breakout_Bram_DanielTests.swift */; };
-		3F5C04A31B3166BE00B67D99 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C04A21B3166BE00B67D99 /* Block.swift */; };
 		3F5C04A51B316A0100B67D99 /* GameOverScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3F5C04A41B316A0100B67D99 /* GameOverScene.sks */; };
 		3F5C04A71B316B3200B67D99 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C04A61B316B3200B67D99 /* GameOverScene.swift */; };
 		3F5C04A91B31843900B67D99 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C04A81B31843900B67D99 /* SettingsViewController.swift */; };
-		3F5C04AB1B31844E00B67D99 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C04AA1B31844E00B67D99 /* Settings.swift */; };
 		3F5C04AD1B31A4B000B67D99 /* Ball.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C04AC1B31A4B000B67D99 /* Ball.swift */; };
 		3F5C04AF1B31A73C00B67D99 /* Paddle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C04AE1B31A73C00B67D99 /* Paddle.swift */; };
 /* End PBXBuildFile section */
@@ -37,6 +36,7 @@
 
 /* Begin PBXFileReference section */
 		3F584BF51B32AF7000FDDC70 /* Brick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Brick.swift; path = ../Brick.swift; sourceTree = "<group>"; };
+		3F584BF71B32CBBE00FDDC70 /* PowerUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerUp.swift; sourceTree = "<group>"; };
 		3F5C04791B315BA000B67D99 /* Breakout_Bram_Daniel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Breakout_Bram_Daniel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F5C047D1B315BA000B67D99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F5C047E1B315BA000B67D99 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -49,11 +49,9 @@
 		3F5C04921B315BA000B67D99 /* Breakout_Bram_DanielTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Breakout_Bram_DanielTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F5C04971B315BA000B67D99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F5C04981B315BA000B67D99 /* Breakout_Bram_DanielTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Breakout_Bram_DanielTests.swift; sourceTree = "<group>"; };
-		3F5C04A21B3166BE00B67D99 /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		3F5C04A41B316A0100B67D99 /* GameOverScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameOverScene.sks; sourceTree = "<group>"; };
 		3F5C04A61B316B3200B67D99 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		3F5C04A81B31843900B67D99 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		3F5C04AA1B31844E00B67D99 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		3F5C04AC1B31A4B000B67D99 /* Ball.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ball.swift; sourceTree = "<group>"; };
 		3F5C04AE1B31A73C00B67D99 /* Paddle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paddle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -103,14 +101,13 @@
 				3F5C04841B315BA000B67D99 /* GameViewController.swift */,
 				3F5C04861B315BA000B67D99 /* Main.storyboard */,
 				3F5C047C1B315BA000B67D99 /* Supporting Files */,
-				3F5C04A21B3166BE00B67D99 /* Block.swift */,
 				3F5C04A41B316A0100B67D99 /* GameOverScene.sks */,
 				3F5C04A61B316B3200B67D99 /* GameOverScene.swift */,
 				3F5C04A81B31843900B67D99 /* SettingsViewController.swift */,
-				3F5C04AA1B31844E00B67D99 /* Settings.swift */,
 				3F5C04AC1B31A4B000B67D99 /* Ball.swift */,
 				3F584BF51B32AF7000FDDC70 /* Brick.swift */,
 				3F5C04AE1B31A73C00B67D99 /* Paddle.swift */,
+				3F584BF71B32CBBE00FDDC70 /* PowerUp.swift */,
 			);
 			path = Breakout_Bram_Daniel;
 			sourceTree = "<group>";
@@ -248,11 +245,10 @@
 				3F5C04A71B316B3200B67D99 /* GameOverScene.swift in Sources */,
 				3F5C04831B315BA000B67D99 /* GameScene.swift in Sources */,
 				3F5C04AF1B31A73C00B67D99 /* Paddle.swift in Sources */,
-				3F5C04A31B3166BE00B67D99 /* Block.swift in Sources */,
 				3F584BF61B32AF7000FDDC70 /* Brick.swift in Sources */,
 				3F5C04851B315BA000B67D99 /* GameViewController.swift in Sources */,
-				3F5C04AB1B31844E00B67D99 /* Settings.swift in Sources */,
 				3F5C047F1B315BA000B67D99 /* AppDelegate.swift in Sources */,
+				3F584BF81B32CBBE00FDDC70 /* PowerUp.swift in Sources */,
 				3F5C04A91B31843900B67D99 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
